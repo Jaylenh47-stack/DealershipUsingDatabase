@@ -2,6 +2,7 @@ package persistance;
 
 import models.Contract;
 import models.LeaseContract;
+import models.SalesContract;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

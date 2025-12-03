@@ -3,28 +3,20 @@ package userinterface;
 import models.*;
 import models.Dealership;
 import models.Vehicle;
-import persistance.ContractDataManager;
-import persistance.DealershipDao;
-import persistance.DealershipFileManager;
-import persistance.VehicleDao;
+import persistance.*;
 
 import java.util.ArrayList;
 
 public class UserInterface {
-    private Dealership dealership;
+
     private VehicleDao vehicleDao;
     private DealershipDao dealershipDao;
-    
+    private ContractDao contractDao;
 
-    private void init(){
-        //Create dealership from persistance.DealershipFileManager
-        DealershipFileManager dealershipFileManager = new DealershipFileManager();
-        dealership = dealershipFileManager.getDealership();
-
-    }
-
-    public UserInterface() {
-        init();
+    public UserInterface(VehicleDao vehicleDao, DealershipDao dealershipDao, ContractDao contractDao) {
+        this.vehicleDao = vehicleDao;
+        this.dealershipDao = dealershipDao;
+        this.contractDao = contractDao;
     }
 
     public int displayMenu(){
