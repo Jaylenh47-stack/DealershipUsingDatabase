@@ -1,4 +1,6 @@
-public class LeaseContract extends Contract{
+package models;
+
+public class LeaseContract extends Contract {
     private double expectedEndingValue;
     private double leaseFee;
 

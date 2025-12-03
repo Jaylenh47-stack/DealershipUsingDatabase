@@ -1,4 +1,6 @@
-public class SalesContract extends Contract{
+package models;
+
+public class SalesContract extends Contract {
     private double salesTax;
     private double recordingFee;
     private double processingFee;

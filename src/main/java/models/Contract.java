@@ -1,3 +1,5 @@
+package models;
+
 public abstract class Contract {
     private String date;
     private String customerName;

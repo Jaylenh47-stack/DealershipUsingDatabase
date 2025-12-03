@@ -1,3 +1,8 @@
+package persistance;
+
+import models.Contract;
+import models.LeaseContract;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 

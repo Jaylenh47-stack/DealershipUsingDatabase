@@ -1,10 +1,23 @@
+package userinterface;
+
+import models.*;
+import models.Dealership;
+import models.Vehicle;
+import persistance.ContractDataManager;
+import persistance.DealershipDao;
+import persistance.DealershipFileManager;
+import persistance.VehicleDao;
+
 import java.util.ArrayList;
 
 public class UserInterface {
     private Dealership dealership;
+    private VehicleDao vehicleDao;
+    private DealershipDao dealershipDao;
+    
 
     private void init(){
-        //Create dealership from DealershipFileManager
+        //Create dealership from persistance.DealershipFileManager
         DealershipFileManager dealershipFileManager = new DealershipFileManager();
         dealership = dealershipFileManager.getDealership();
 
@@ -23,10 +36,10 @@ public class UserInterface {
                 3) Search By Year
                 4) Search By Color
                 5) Search By Mileage
-                6) Search By Vehicle Type
+                6) Search By models.Vehicle Type
                 7) Display All Vehicles
-                8) Add Vehicle
-                9) Remove Vehicle
+                8) Add models.Vehicle
+                9) Remove models.Vehicle
                 10) Sell/Lease a vehicle
                 0) Exit
                 """);
@@ -85,10 +98,10 @@ public class UserInterface {
     }
 
     public void processGetByPriceRequest(){
-        double minPrice = ConsoleHelper.promptForDouble("Minimum price of Vehicle");
-        double maxPrice = ConsoleHelper.promptForDouble("Maximum price of Vehicle");
+        double minPrice = ConsoleHelper.promptForDouble("Minimum price of models.Vehicle");
+        double maxPrice = ConsoleHelper.promptForDouble("Maximum price of models.Vehicle");
         displayVehicles(dealership.getVehiclesByPrice(minPrice, maxPrice));
-        //for (Vehicle v : dealership.getVehiclesByPrice(minPrice, maxPrice)) {
+        //for (models.Vehicle v : dealership.getVehiclesByPrice(minPrice, maxPrice)) {
            // System.out.println(v);
            // System.out.println(this.dealership.getVehiclesByPrice(minPrice, maxPrice));
         //}
@@ -125,12 +138,8 @@ public class UserInterface {
     }
 
     public void processGetAllVehiclesRequest(){
-
         displayVehicles(dealership.getAllVehicles());
-
     }
-
-
 
     public void processAddVehicleRequest(){
 
@@ -147,9 +156,7 @@ public class UserInterface {
         dealership.addVehicle(v);
 
         DealershipFileManager.saveDealership(dealership);
-        System.out.println("Vehicle added successfully");
-
-
+        System.out.println("models.Vehicle added successfully");
 
 
     }
@@ -165,7 +172,7 @@ public class UserInterface {
             DealershipFileManager.saveDealership(dealership);
         }
         else{
-            System.out.println("Vehicle not found");
+            System.out.println("models.Vehicle not found");
         }
     }
 
@@ -179,7 +186,7 @@ public class UserInterface {
                 return vehicleSold;
             }
             else{
-                System.out.println("Vehicle not found");
+                System.out.println("models.Vehicle not found");
             }
         }while(!isFound);
         return null;
@@ -193,7 +200,7 @@ public class UserInterface {
                 "2) Lease");
 
        Vehicle v = getVehicleByVinPrompt();
-        String date = ConsoleHelper.promptForString("Contract date (YYYYMMDD)");
+        String date = ConsoleHelper.promptForString("models.Contract date (YYYYMMDD)");
         String name = ConsoleHelper.promptForString("Customer name");
         String email = ConsoleHelper.promptForString("Customer email") ;
 

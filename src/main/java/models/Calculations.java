@@ -1,3 +1,5 @@
+package models;
+
 public class Calculations {
 
     public static double calculateMonthlyPayment(double principal, float annualInterestRate, int numberOfPayments ){

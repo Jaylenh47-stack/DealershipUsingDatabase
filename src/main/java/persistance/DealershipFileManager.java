@@ -1,3 +1,8 @@
+package persistance;
+
+import models.Dealership;
+import models.Vehicle;
+
 import java.io.*;
 
 public class DealershipFileManager {
