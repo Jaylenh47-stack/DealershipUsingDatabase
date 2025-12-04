@@ -5,7 +5,9 @@ import models.Dealership;
 import models.Vehicle;
 import persistance.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserInterface {
 
@@ -28,10 +30,10 @@ public class UserInterface {
                 3) Search By Year
                 4) Search By Color
                 5) Search By Mileage
-                6) Search By models.Vehicle Type
+                6) Search By Vehicle Type
                 7) Display All Vehicles
-                8) Add models.Vehicle
-                9) Remove models.Vehicle
+                8) Add Vehicle
+                9) Remove Vehicle
                 10) Sell/Lease a vehicle
                 0) Exit
                 """);
@@ -45,25 +47,25 @@ public class UserInterface {
         while(true) {
             switch (displayMenu()) {
                 case 1:
-                    processGetByPriceRequest();
+                    processSearchByPriceRequest();
                     break;
                 case 2:
-                    processGetByMakeModelRequest();
+                    processSearchByMakeModelRequest();
                     break;
                 case 3:
-                    processGetByYearRequest();
+                    processSearchByYearRequest();
                     break;
                 case 4:
-                    processGetByColorRequest();
+                    processSearchByColorRequest();
                     break;
                 case 5:
-                    processGetByMileageRequest();
+                    processSearchByMileageRequest();
                     break;
                 case 6:
-                    processGetByVehicleTypeRequest();
+                    processSearchByVehicleTypeRequest();
                     break;
                 case 7:
-                    processGetAllVehiclesRequest();
+                    processDisplayAllVehiclesRequest();
                     break;
                 case 8:
                     processAddVehicleRequest();
@@ -82,55 +84,90 @@ public class UserInterface {
         }
     }
 
-    private void displayVehicles(ArrayList<Vehicle> vehicles){
-        for (Vehicle v : vehicles){
-            System.out.println(v);
-        }
+    private void displayVehicles(List<Vehicle> vehicles){
         vehicles.forEach(System.out::println);
     }
 
-    public void processGetByPriceRequest(){
-        double minPrice = ConsoleHelper.promptForDouble("Minimum price of models.Vehicle");
-        double maxPrice = ConsoleHelper.promptForDouble("Maximum price of models.Vehicle");
-        displayVehicles(dealership.getVehiclesByPrice(minPrice, maxPrice));
-        //for (models.Vehicle v : dealership.getVehiclesByPrice(minPrice, maxPrice)) {
-           // System.out.println(v);
-           // System.out.println(this.dealership.getVehiclesByPrice(minPrice, maxPrice));
-        //}
+    public void processSearchByPriceRequest(){
+        double minPrice = ConsoleHelper.promptForDouble("Minimum price of Vehicle");
+        double maxPrice = ConsoleHelper.promptForDouble("Maximum price of Vehicle");
+        try {
+            displayVehicles(vehicleDao.getVehiclesByPrice(minPrice, maxPrice));
+            System.out.println();
+        }
+        catch (SQLException e) {
+            System.out.println("There was a SQL error: " + e.getMessage());
+        }
+
 
     }
 
-    public void processGetByMakeModelRequest(){
+    public void processSearchByMakeModelRequest(){
         String make = ConsoleHelper.promptForString("Enter the make of the vehicle");
         String model = ConsoleHelper.promptForString("Enter the model of the vehicle");
-        displayVehicles(dealership.getVehiclesByMakeModel(make, model));
+        try {
+            displayVehicles(vehicleDao.getVehiclesByMakeModel(make, model));
+            System.out.println();
+        }
+        catch (SQLException e) {
+            System.out.println("There was a SQL error: " + e.getMessage());
+        }
 
     }
 
-    public void processGetByYearRequest(){
-        int minYear = ConsoleHelper.promptForInt("Enter the earliest year of the vehicles you want to see");
-        int maxYear = ConsoleHelper.promptForInt("Enter the latest year of the vehicles you want to see");
-        displayVehicles(dealership.getVehiclesByYear(minYear, maxYear));
+    public void processSearchByYearRequest(){
+        int min = ConsoleHelper.promptForInt("Enter the earliest year of the vehicles you want to see");
+        int max = ConsoleHelper.promptForInt("Enter the latest year of the vehicles you want to see");
+        try {
+            displayVehicles(vehicleDao.getVehiclesByYear(min, max));
+            System.out.println();
+        }
+        catch (SQLException e) {
+            System.out.println("There was a SQL error: " + e.getMessage());
+        }
     }
 
-    public void processGetByColorRequest(){
+    public void processSearchByColorRequest(){
         String color = ConsoleHelper.promptForString("Enter the color of the vehicle you want to see");
-        displayVehicles(dealership.getVehiclesByColor(color));
+        try {
+            displayVehicles(vehicleDao.getVehiclesByColor(color));
+            System.out.println();
+        }
+        catch (SQLException e) {
+            System.out.println("There was a SQL error: " + e.getMessage());
+        }
     }
 
-    public void processGetByMileageRequest(){
-        int minMileage = ConsoleHelper.promptForInt("Enter the minimum miles of the vehicles you want to see");
-        int maxMileage = ConsoleHelper.promptForInt("Enter the maximum miles of the vehicles you want to see");
-        displayVehicles(dealership.getVehiclesByMileage(minMileage, maxMileage));
+    public void processSearchByMileageRequest(){
+        int min = ConsoleHelper.promptForInt("Enter the minimum miles of the vehicles you want to see");
+        int max = ConsoleHelper.promptForInt("Enter the maximum miles of the vehicles you want to see");
+        try {
+            displayVehicles(vehicleDao.getVehiclesByMileage(min, max));
+            System.out.println();
+        }
+        catch (SQLException e) {
+            System.out.println("There was a SQL error: " + e.getMessage());
+        }
     }
 
-    public void processGetByVehicleTypeRequest(){
-        String type = ConsoleHelper.promptForString("Enter the type of the vehicles you want to see");
-        displayVehicles(dealership.getVehiclesByType(type));
+    public void processSearchByVehicleTypeRequest(){
+        String vehicleType = ConsoleHelper.promptForString("Enter the type of the vehicles you want to see");
+        try {
+            displayVehicles(vehicleDao.getVehiclesByVehicleType(vehicleType));
+            System.out.println();
+        }
+        catch (SQLException e) {
+            System.out.println("There was a SQL error: " + e.getMessage());
+        }
     }
 
-    public void processGetAllVehiclesRequest(){
-        displayVehicles(dealership.getAllVehicles());
+    public void processDisplayAllVehiclesRequest(){
+       try {
+           displayVehicles(vehicleDao.getAllVehicles());
+       }
+       catch (SQLException e){
+           System.out.println("There was a SQL error: " + e.getMessage());
+       }
     }
 
     public void processAddVehicleRequest(){
@@ -144,10 +181,10 @@ public class UserInterface {
         int odometer = ConsoleHelper.promptForInt("Enter the mileage of the vehicle");
         double price = ConsoleHelper.promptForDouble("Enter the price of the vehicle");
 
-        Vehicle v = new Vehicle(vin, year, make, model, type, color, odometer, price);
-        dealership.addVehicle(v);
+       // Vehicle v = new Vehicle(vin, year, make, model, type, color, odometer, price);
+        //dealership.addVehicle(v);
 
-        DealershipFileManager.saveDealership(dealership);
+       // DealershipFileManager.saveDealership(dealership);
         System.out.println("models.Vehicle added successfully");
 
 
@@ -157,30 +194,30 @@ public class UserInterface {
 
         int vin = ConsoleHelper.promptForInt("Enter the vin number of the vehicle you want to remove");
 
-        Vehicle v = dealership.getVehicleByVIN(vin);
+       // Vehicle v = dealership.getVehicleByVIN(vin);
 
-        if(v != null){
-            dealership.removeVehicle(v);
-            DealershipFileManager.saveDealership(dealership);
-        }
-        else{
-            System.out.println("models.Vehicle not found");
-        }
+       // if(v != null){
+        //    dealership.removeVehicle(v);
+         //   DealershipFileManager.saveDealership(dealership);
+       // }
+        //else{
+      //      System.out.println("models.Vehicle not found");
+       // }
     }
 
     public Vehicle getVehicleByVinPrompt(){
-       boolean isFound = false;
-        do {
-            int vin = ConsoleHelper.promptForInt("Enter the vin number of the vehicle you would like to purchase");
-            Vehicle vehicleSold = dealership.getVehicleByVIN(vin);
-            if (vehicleSold != null) {
-                isFound = true;
-                return vehicleSold;
-            }
-            else{
-                System.out.println("models.Vehicle not found");
-            }
-        }while(!isFound);
+//       boolean isFound = false;
+//        do {
+//            int vin = ConsoleHelper.promptForInt("Enter the vin number of the vehicle you would like to purchase");
+//            Vehicle vehicleSold = dealership.getVehicleByVIN(vin);
+//            if (vehicleSold != null) {
+//                isFound = true;
+//                return vehicleSold;
+//            }
+//            else{
+//                System.out.println("models.Vehicle not found");
+//            }
+//        }while(!isFound);
         return null;
     }
 
@@ -222,8 +259,8 @@ public class UserInterface {
                 ContractDataManager.saveContract(c);
 
                //remove the vehicle sold from csv
-                dealership.removeVehicle(dealership.getVehicleByVIN(c.getVehicleSold().getVin()));
-                DealershipFileManager.saveDealership(dealership);
+             //   dealership.removeVehicle(dealership.getVehicleByVIN(c.getVehicleSold().getVin()));
+               // DealershipFileManager.saveDealership(dealership);
 
 
 
