@@ -57,11 +57,7 @@ public class DealershipFileManager {
             bufferedWriter.write(dealership.toString());
             bufferedWriter.newLine();
 
-            //Loop through the inventory and write every vehicle to the file
-            for (Vehicle v : dealership.getAllVehicles()){
-                bufferedWriter.write(v.toString());
-                bufferedWriter.newLine();
-            }
+
             bufferedWriter.close();
 
 

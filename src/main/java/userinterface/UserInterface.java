@@ -171,8 +171,8 @@ public class UserInterface {
     }
 
     public void processAddVehicleRequest(){
-
-        int vin = ConsoleHelper.promptForInt("Enter the vin number");
+        //Get the information to add a vehicle, vehicles start out not sold
+        String vin = ConsoleHelper.promptForString("Enter the vin number");
         int year = ConsoleHelper.promptForInt("Enter the year of the vehicle");
         String make = ConsoleHelper.promptForString("Enter the make of the vehicle");
         String model = ConsoleHelper.promptForString("Enter the model of the vehicle");
@@ -180,15 +180,31 @@ public class UserInterface {
         String color = ConsoleHelper.promptForString("Enter the color of the vehicle");
         int odometer = ConsoleHelper.promptForInt("Enter the mileage of the vehicle");
         double price = ConsoleHelper.promptForDouble("Enter the price of the vehicle");
+        boolean isSold = false;
 
-       // Vehicle v = new Vehicle(vin, year, make, model, type, color, odometer, price);
-        //dealership.addVehicle(v);
+        //Get dealershipID to insert into inventory table
+        int dealershipID = ConsoleHelper.promptForInt("Enter the dealershipID for the inventory of this vehicle");
 
-       // DealershipFileManager.saveDealership(dealership);
-        System.out.println("models.Vehicle added successfully");
+       try{
+           Vehicle v = vehicleDao.addVehicle(vin, year, make, model, type, color, odometer, price, isSold);
+
+           System.out.println("Added following vehicle:");
+           System.out.println(v);
+           System.out.println();
+
+           dealershipDao.addVehicleToInventory(dealershipID, vin);
+           System.out.println("Updated inventory with following values:");
+           System.out.println(dealershipID + " " + vin);
+           System.out.println();
+       }
+       catch (SQLException e) {
+           System.out.println("There was a SQL error: " + e.getMessage());
+       }
 
 
     }
+
+
 
     public void processRemoveVehicleRequest(){
 

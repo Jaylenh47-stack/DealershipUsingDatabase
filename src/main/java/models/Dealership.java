@@ -42,7 +42,7 @@ public class Dealership {
 
 
 
-    
+
 
     @Override
     public String toString() {

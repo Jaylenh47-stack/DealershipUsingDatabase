@@ -6,11 +6,11 @@ import persistance.ContractDao;
 import persistance.DealershipDao;
 import persistance.VehicleDao;
 import userinterface.UserInterface;
-//How do big projects handle all of their Dao's
-//Can i make a method to so that I don't have to say try connect.. every time
+
 public class Main {
 
     public static void main(String[] args){
+
         try{
             BasicDataSource ds = getBasicDataSource(args);
 
@@ -24,9 +24,6 @@ public class Main {
         catch (Exception e){
             System.out.println("There was an error: " + e.getMessage());
         }
-
-
-
 
     }
 
